@@ -1,0 +1,9 @@
+{
+  "name": "external-initiator",
+  "version": "0.0.1",
+  "description": "Chainlink External Initiator",
+  "license": "MIT",
+  "engines": {
+    "node": "~12"
+  }
+}
