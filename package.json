@@ -16,22 +16,17 @@
     "prettier:fix": "prettier --write -l \"{external-adapter,external-initiator}/**/*.{ts,tsx,js,jsx,json,md}\"",
     "eslint:check": "eslint --ext .ts,.js external-adapter external-initiator",
     "eslint:fix": "eslint --ext .ts,.js external-adapter external-initiator --fix",
-    "test": "jest --config jest.config.js --logHeapUsage --detectOpenHandles",
     "install": "yarn --cwd external-adapter install && yarn --cwd external-initiator install"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.0",
-    "@types/node": "12",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
     "husky": "^4.2.5",
-    "jest": "^26.0.1",
     "lint-staged": "^10.2.9",
     "prettier": "=2.0.2",
-    "ts-jest": "^26.1.0",
     "typescript": "~3.9.3"
   },
   "husky": {

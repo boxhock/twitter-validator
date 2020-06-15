@@ -27,12 +27,6 @@ This is monorepo with two separate packages included: `external-adapter` and
 yarn install
 ```
 
-#### Run tests
-
-```shell script
-yarn test
-```
-
 #### Run linters (prettier and eslint incuded)
 
 ```shell script

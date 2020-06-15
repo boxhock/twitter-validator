@@ -34,9 +34,9 @@ module.exports = {
     // our regex expressions anyway.
     'no-useless-escape': 'off',
     // Obvious evil imo, but unfortunately there are a lot of such methods in our code. :(
-    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'error',
     // I doubt we'll ever make it go, but let me just dream about it. :D
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
     // There's really no need to write like this: `let myBool: boolean = true;`.
     '@typescript-eslint/no-inferrable-types': 'off',
     // Suggested alternative is optional chaining and introducing an unwrap/expect function
@@ -45,7 +45,7 @@ module.exports = {
     // Unused variables potentially indicate a bug. If they are left unused on purpose,
     // the possibles solutions are either suppressing the linter where needed
     // or underscoring a variable.
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
 
     // The overrides that are supposedly good:
 
@@ -57,7 +57,7 @@ module.exports = {
     'no-bitwise': 'error',
     'no-caller': 'error',
     'no-console': 'error',
-    'no-constant-condition': ['error', {checkLoops: false}],
+    'no-constant-condition': ['error', { checkLoops: false }],
     'no-empty': [
       'error',
       {
@@ -93,7 +93,7 @@ module.exports = {
     '@typescript-eslint/indent': 'off',
     // Allows to explicitly discard the promise with `void` keyword.
     '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-floating-promises': ['error', {ignoreVoid: true}],
+    '@typescript-eslint/no-floating-promises': ['error', { ignoreVoid: true }],
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',

@@ -5,5 +5,17 @@
   "license": "MIT",
   "engines": {
     "node": "~12"
+  },
+  "scripts": {
+    "test": "dotenv -e test.env -- jest --config jest.config.js --logHeapUsage --detectOpenHandles"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^3.1.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "12",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2",
+    "typescript": "~3.9.3"
   }
 }

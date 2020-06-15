@@ -115,7 +115,7 @@ module.exports = {
   // rootDir: 'lib',
 
   // A list of paths to directories that Jest should use to search for files in
-  roots: ['external-adapter', 'external-initiator'],
+  roots: ['.'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
