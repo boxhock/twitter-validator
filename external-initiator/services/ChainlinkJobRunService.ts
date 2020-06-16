@@ -17,18 +17,21 @@ export default class ChainlinkJobRunService {
       null,
       config.CHAINLINK.NODE_URL,
     ),
+    private readonly options = {
+      jobId: config.CHAINLINK.JOB_ID,
+      accessHeaders: {
+        [config.CHAINLINK.ACCESS_KEY_HEADER]: config.CHAINLINK.ACCESS_KEY,
+        [config.CHAINLINK.ACCESS_SECRET_HEADER]: config.CHAINLINK.ACCESS_SECRET,
+      },
+    },
   ) {}
 
   async createJobRun(jobPayload: object): Promise<IRestResponse<JobRun>> {
     return this.client.create<JobRun>(
-      `/v2/specs/${config.CHAINLINK.JOB_ID}/runs`,
+      `/v2/specs/${this.options.jobId}/runs`,
       jobPayload,
       {
-        additionalHeaders: {
-          [config.CHAINLINK.ACCESS_KEY_HEADER]: config.CHAINLINK.ACCESS_KEY,
-          [config.CHAINLINK.ACCESS_SECRET_HEADER]:
-            config.CHAINLINK.ACCESS_SECRET,
-        },
+        additionalHeaders: this.options.accessHeaders,
       },
     );
   }

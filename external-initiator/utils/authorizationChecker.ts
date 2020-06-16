@@ -8,5 +8,7 @@ export default (action: Action): boolean => {
   const secret =
     action.request.headers[config.AUTH_SECRET_HEADER] ||
     action.request.headers[config.AUTH_SECRET_HEADER.toLowerCase()];
-  return key === config.AUTH_KEY && secret === config.AUTH_SECRET;
+  return (
+    key && secret && key === config.AUTH_KEY && secret === config.AUTH_SECRET
+  );
 };
