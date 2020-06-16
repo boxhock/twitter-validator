@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {
   Body,
   Post,
@@ -9,7 +10,7 @@ import {
 import ChainlinkJobRunService from '../services/ChainlinkJobRunService';
 
 @JsonController()
-export class JobController {
+export default class JobController {
   constructor(
     private readonly jobRunService: ChainlinkJobRunService = new ChainlinkJobRunService(),
   ) {}

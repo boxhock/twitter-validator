@@ -7,6 +7,7 @@
     "node": "~12"
   },
   "scripts": {
+    "build": "tsc -p .",
     "dev": "dotenv -e test.env -- ts-node-dev -T index.ts",
     "test": "dotenv -e test.env -- jest --config jest.config.js --logHeapUsage --detectOpenHandles"
   },

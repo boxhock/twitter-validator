@@ -14,6 +14,37 @@ account on Ethereum blockchain using .crypto domains.
 
 ![Twitter Validation Flow](./documentation/diagrams/twitter-validation-flow.png)
 
+## Production
+
+All packages prodives Dockerfile. You need to build docker image before running
+the module.
+
+### Build
+
+Run from repository root.
+
+```shell script
+docker build -f <package name>/Dockerfile . -t <image name>
+```
+
+### Run
+
+You would need set all required environment variables for running docker image.
+
+#### Env variables
+
+All environment variables that needed by docker image specified at
+`<package name>/README.md`
+
+#### Run docker image
+
+```shell script
+docker run -p 3000:3000 -e LISTEN_HTTP_PORT=3000 -e FIRST_ENV=value -e SECOND_ENV=val <image name>
+```
+
+Note: port can be different depends on `LISTEN_HTTP_PORT` environment variable
+value.
+
 ## Development
 
 #### Overview
