@@ -13,8 +13,7 @@ describe('RunController', () => {
       .reply(200, JobRunCreated);
     const res = await supertest(application)
       .post('/runs')
-      .set('X-Chainlink-EA-AccessKey', config.AUTH_KEY)
-      .set('X-Chainlink-EA-Secret', config.AUTH_SECRET)
+      .set('Bearer', config.AUTHENTICATION_TOKEN)
       .expect(200)
       .send({ job: 'data' });
     expect(res.body).toEqual(JobRunCreated);
@@ -26,8 +25,7 @@ describe('RunController', () => {
       .reply(404);
     await supertest(application)
       .post('/runs')
-      .set('X-Chainlink-EA-AccessKey', config.AUTH_KEY)
-      .set('X-Chainlink-EA-Secret', config.AUTH_SECRET)
+      .set('Bearer', config.AUTHENTICATION_TOKEN)
       .expect(500)
       .send();
 
@@ -36,8 +34,7 @@ describe('RunController', () => {
       .reply(400);
     await supertest(application)
       .post('/runs')
-      .set('X-Chainlink-EA-AccessKey', config.AUTH_KEY)
-      .set('X-Chainlink-EA-Secret', config.AUTH_SECRET)
+      .set('Bearer', config.AUTHENTICATION_TOKEN)
       .expect(500)
       .send();
 
@@ -46,8 +43,7 @@ describe('RunController', () => {
       .reply(500);
     await supertest(application)
       .post('/runs')
-      .set('X-Chainlink-EA-AccessKey', config.AUTH_KEY)
-      .set('X-Chainlink-EA-Secret', config.AUTH_SECRET)
+      .set('Bearer', config.AUTHENTICATION_TOKEN)
       .expect(500)
       .send();
   });

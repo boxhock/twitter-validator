@@ -6,8 +6,8 @@ describe('AuthorizationChecker', () => {
     const authorized = authorizationChecker({
       request: {
         headers: {
-          'X-Chainlink-EA-AccessKey': config.AUTH_KEY,
-          'X-Chainlink-EA-Secret': config.AUTH_SECRET,
+          'X-Chainlink-EA-AccessKey': config.CHAINLINK.OUTGOING_TOKEN,
+          'X-Chainlink-EA-Secret': config.CHAINLINK.OUTGOING_SECRET,
         },
       },
       response: {},
@@ -19,7 +19,7 @@ describe('AuthorizationChecker', () => {
     let authorized = authorizationChecker({
       request: {
         headers: {
-          'X-Chainlink-EA-Secret': config.AUTH_SECRET,
+          'X-Chainlink-EA-Secret': config.CHAINLINK.OUTGOING_SECRET,
         },
       },
       response: {},
@@ -29,7 +29,7 @@ describe('AuthorizationChecker', () => {
     authorized = authorizationChecker({
       request: {
         headers: {
-          'X-Chainlink-EA-AccessKey': config.AUTH_KEY,
+          'X-Chainlink-EA-AccessKey': config.CHAINLINK.OUTGOING_TOKEN,
         },
       },
       response: {},
@@ -45,6 +45,38 @@ describe('AuthorizationChecker', () => {
           'X-Chainlink-EA-Secret': 'incorrect',
         },
       },
+      response: {},
+    });
+    expect(authorized).toBeFalsy();
+  });
+
+  it('should return true for correct Bearer', () => {
+    const authorized = authorizationChecker({
+      request: {
+        headers: {
+          Bearer: config.AUTHENTICATION_TOKEN,
+        },
+      },
+      response: {},
+    });
+    expect(authorized).toBeTruthy();
+  });
+
+  it('should return false for incorrect Bearer', () => {
+    const authorized = authorizationChecker({
+      request: {
+        headers: {
+          Bearer: 'incorrect',
+        },
+      },
+      response: {},
+    });
+    expect(authorized).toBeFalsy();
+  });
+
+  it('should return false for empty headers', () => {
+    const authorized = authorizationChecker({
+      request: {},
       response: {},
     });
     expect(authorized).toBeFalsy();

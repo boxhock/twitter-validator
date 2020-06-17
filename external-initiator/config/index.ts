@@ -2,15 +2,15 @@ const config = {
   CHAINLINK: {
     ACCESS_KEY: process.env.CHAINLINK_ACCESS_KEY as string,
     ACCESS_SECRET: process.env.CHAINLINK_ACCESS_SECRET as string,
-    ACCESS_KEY_HEADER: 'X-Chainlink-EA-AccessKey',
-    ACCESS_SECRET_HEADER: 'X-Chainlink-EA-Secret',
-    JOB_ID: process.env.CHAINLINK_JOB_ID,
-    NODE_URL: process.env.CHAINLINK_NODE_URL,
+    OUTGOING_TOKEN: process.env.CHAINLINK_OUTGOING_TOKEN as string,
+    OUTGOING_SECRET: process.env.CHAINLINK_OUTGOING_SECRET as string,
+    KEY_HEADER: 'X-Chainlink-EA-AccessKey',
+    SECRET_HEADER: 'X-Chainlink-EA-Secret',
+    JOB_ID: process.env.CHAINLINK_JOB_ID as string,
+    NODE_URL: process.env.CHAINLINK_NODE_URL as string,
   },
-  AUTH_KEY_HEADER: 'X-Chainlink-EA-AccessKey',
-  AUTH_SECRET_HEADER: 'X-Chainlink-EA-Secret',
-  AUTH_KEY: process.env.AUTHENTICATION_TOKEN as string,
-  AUTH_SECRET: process.env.AUTHENTICATION_SECRET as string,
+  AUTHENTICATION_TOKEN: process.env.AUTHENTICATION_TOKEN as string,
+  AUTHENTICATION_TOKEN_HEADER: 'Bearer',
   LISTEN_HTTP_PORT: process.env.LISTEN_HTTP_PORT || (3000 as number),
 } as const;
 

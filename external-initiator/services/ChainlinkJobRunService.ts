@@ -16,13 +16,16 @@ export default class ChainlinkJobRunService {
     private readonly client: RestClient = new RestClient(
       null,
       config.CHAINLINK.NODE_URL,
+      [],
+      {
+        headers: {
+          [config.CHAINLINK.KEY_HEADER]: config.CHAINLINK.ACCESS_KEY,
+          [config.CHAINLINK.SECRET_HEADER]: config.CHAINLINK.ACCESS_SECRET,
+        },
+      },
     ),
     private readonly options = {
       jobId: config.CHAINLINK.JOB_ID,
-      accessHeaders: {
-        [config.CHAINLINK.ACCESS_KEY_HEADER]: config.CHAINLINK.ACCESS_KEY,
-        [config.CHAINLINK.ACCESS_SECRET_HEADER]: config.CHAINLINK.ACCESS_SECRET,
-      },
     },
   ) {}
 
@@ -30,9 +33,6 @@ export default class ChainlinkJobRunService {
     return this.client.create<JobRun>(
       `/v2/specs/${this.options.jobId}/runs`,
       jobPayload,
-      {
-        additionalHeaders: this.options.accessHeaders,
-      },
     );
   }
 }

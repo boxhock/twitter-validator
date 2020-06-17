@@ -6,8 +6,8 @@ describe('JobController', () => {
   it('should return empty json on POST /jobs', async () => {
     const res = await supertest(application)
       .post('/jobs')
-      .set('X-Chainlink-EA-AccessKey', config.AUTH_KEY)
-      .set('X-Chainlink-EA-Secret', config.AUTH_SECRET)
+      .set('X-Chainlink-EA-AccessKey', config.CHAINLINK.OUTGOING_TOKEN)
+      .set('X-Chainlink-EA-Secret', config.CHAINLINK.OUTGOING_SECRET)
       .send();
     expect(res.body).toEqual({});
     expect(res.status).toEqual(200);
