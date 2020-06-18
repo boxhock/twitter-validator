@@ -20,8 +20,7 @@ export default class JobController {
   @Post('/runs')
   async post(@Body() body: object): Promise<object | null> {
     try {
-      const jobRunData = await this.jobRunService.createJobRun(body);
-      return jobRunData.result;
+      return this.jobRunService.createJobRun(body);
     } catch (e) {
       throw new InternalServerError(e.message);
     }

@@ -22,14 +22,13 @@ describe('ChainlinkJobRunService', () => {
   it('should create new job', async () => {
     mockedHttpCall.reply(200, JobRunCreated);
     const jobRunData = await jobRunService.createJobRun(expectedJobPayload);
-    expect(jobRunData.result).toEqual(JobRunCreated);
+    expect(jobRunData).toEqual(JobRunCreated);
   });
 
   it('should return null if job not found', async () => {
     mockedHttpCall.reply(404, JobNotFound);
     const jobRunData = await jobRunService.createJobRun(expectedJobPayload);
-    expect(jobRunData.result).toEqual(null);
-    expect(jobRunData.statusCode).toEqual(404);
+    expect(jobRunData).toEqual(null);
   });
 
   it('should throw error if get errors from Chainlink Node', async () => {

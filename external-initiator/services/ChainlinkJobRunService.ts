@@ -1,5 +1,5 @@
 import config from '../config';
-import { IRestResponse, RestClient } from 'typed-rest-client/RestClient';
+import { RestClient } from 'typed-rest-client/RestClient';
 
 type JobRun = {
   data: {
@@ -29,10 +29,12 @@ export default class ChainlinkJobRunService {
     },
   ) {}
 
-  async createJobRun(jobPayload: object): Promise<IRestResponse<JobRun>> {
-    return this.client.create<JobRun>(
+  async createJobRun(jobPayload: object): Promise<JobRun | null> {
+    const jobRun = await this.client.create<JobRun>(
       `/v2/specs/${this.options.jobId}/runs`,
       jobPayload,
     );
+
+    return jobRun.result;
   }
 }
