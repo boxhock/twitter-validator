@@ -2,8 +2,6 @@ const config = {
   CHAINLINK: {
     ACCESS_KEY: process.env.CHAINLINK_ACCESS_KEY as string,
     ACCESS_SECRET: process.env.CHAINLINK_ACCESS_SECRET as string,
-    OUTGOING_TOKEN: process.env.CHAINLINK_OUTGOING_TOKEN as string,
-    OUTGOING_SECRET: process.env.CHAINLINK_OUTGOING_SECRET as string,
     KEY_HEADER: 'X-Chainlink-EA-AccessKey',
     SECRET_HEADER: 'X-Chainlink-EA-Secret',
     JOB_ID: process.env.CHAINLINK_JOB_ID as string,
