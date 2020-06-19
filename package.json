@@ -6,7 +6,7 @@
   "author": "Kirill Beresnev <derainberk@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "~12"
+    "node": "12.18.0"
   },
   "scripts": {
     "fix": "yarn prettier:fix && yarn eslint:fix",

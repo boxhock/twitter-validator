@@ -4,7 +4,7 @@
   "description": "Chainlink External Adapter",
   "license": "MIT",
   "engines": {
-    "node": "~12"
+    "node": "12.18.0"
   },
   "scripts": {
     "build": "tsc -p .",

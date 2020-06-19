@@ -21,7 +21,11 @@ type Tweets = {
   statuses: Tweet[];
 };
 
+export class InvalidTwitterHashtagError extends Error {}
+
 export default class TwitterSearchService {
+  private readonly invalidHashtagDetector: RegExp = /[^\w]/;
+
   constructor(
     private readonly client: RestClient = new RestClient(
       null,
@@ -37,6 +41,9 @@ export default class TwitterSearchService {
   ) {}
 
   async searchTweetsByHashtag(hashtag: string): Promise<Tweet[]> {
+    if (this.invalidHashtagDetector.test(hashtag)) {
+      throw new InvalidTwitterHashtagError('Invalid twitter hashtag provided');
+    }
     const tweets = await this.client.get<Tweets>(
       `/${config.TWITTER.API_VERSION}/search/tweets.json`,
       {
@@ -51,6 +58,7 @@ export default class TwitterSearchService {
         },
       },
     );
+
     return tweets.result ? tweets.result.statuses : [];
   }
 }
@@ -80,9 +88,7 @@ class TwitterAuthenticationHandler implements IRequestHandler {
     requestInfo: IRequestInfo,
     objs: any,
   ): Promise<IHttpClientResponse> {
-    if (!this.accessToken) {
-      this.accessToken = await this.requestAccessToken(httpClient);
-    }
+    this.accessToken = await this.requestAccessToken(httpClient);
     const authenticatedRequestInfo = requestInfo;
     _.set(
       authenticatedRequestInfo.options,
