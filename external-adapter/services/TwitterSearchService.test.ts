@@ -6,31 +6,35 @@ import SearchMultipleTweets from '../mocks/twitter/responses/SearchMultipleTweet
 import OAuth2BearerToken from '../mocks/twitter/responses/OAuth2BearerToken.json';
 import TwitterSearchService, {
   InvalidTwitterHashtagError,
+  TooMuchTweetsInResponseError,
 } from './TwitterSearchService';
 import { Base64 } from 'js-base64';
+import qs from 'qs';
 
 describe('TwitterSearchService', () => {
   let service: TwitterSearchService;
-  const queryMatcher: DataMatcherMap = {
-    tweet_mode: 'extended',
-    result_type: 'recent',
-    include_entities: 'false',
-    count: '100',
-  };
+  let queryMatcher: DataMatcherMap;
   const twitterSearchPath = `/${config.TWITTER.API_VERSION}/search/tweets.json`;
   const twitterOAuthPath = '/oauth2/token';
 
   beforeEach(() => {
     service = new TwitterSearchService();
+    queryMatcher = {
+      result_type: 'recent',
+      include_entities: 'false',
+      count: 100,
+      max_id: '',
+    };
   });
 
   describe('Invalid parameters', () => {
     it('should throw exception if invalid hashtag provided', async () => {
-      await expect(
-        service.searchTweetsByHashtag('%$@#dss'),
-      ).rejects.toThrowError(
-        new InvalidTwitterHashtagError('Invalid twitter hashtag provided'),
-      );
+      try {
+        await service.searchTweetsByHashtag('$#@%%');
+        fail('Should fail');
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidTwitterHashtagError);
+      }
     });
   });
 
@@ -144,6 +148,94 @@ describe('TwitterSearchService', () => {
         .reply(200);
       await service.searchTweetsByHashtag('sametoken');
       searchWithTheSameTokenScope.done();
+    });
+  });
+
+  describe('Pagination', () => {
+    let service: TwitterSearchService;
+    let queryMatcher: DataMatcherMap;
+
+    beforeEach(() => {
+      const tweetsPerRequest = SearchMultipleTweets.statuses.length;
+      service = new TwitterSearchService(tweetsPerRequest);
+      queryMatcher = {
+        result_type: 'recent',
+        include_entities: 'false',
+        count: tweetsPerRequest,
+      };
+    });
+
+    it('should request next results if received multiple pages of tweets', async () => {
+      const expectedMaxId = qs.parse(
+        SearchMultipleTweets.search_metadata.next_results,
+        { ignoreQueryPrefix: true },
+      ).max_id;
+      const firstPageScope = nock(config.TWITTER.API_URL)
+        .get(twitterSearchPath)
+        .query({
+          ...queryMatcher,
+          max_id: '',
+          q: '#unstoppable -filter:retweets',
+        })
+        .reply(200, SearchMultipleTweets);
+
+      const secondsPageScope = nock(config.TWITTER.API_URL)
+        .get(twitterSearchPath)
+        .query({
+          ...queryMatcher,
+          q: '#unstoppable -filter:retweets',
+          max_id: expectedMaxId,
+        })
+        .reply(200, SearchMultipleTweets);
+
+      const thirdEmptyPageScope = nock(config.TWITTER.API_URL)
+        .get(twitterSearchPath)
+        .query({
+          ...queryMatcher,
+          q: '#unstoppable -filter:retweets',
+          max_id: expectedMaxId,
+        })
+        .reply(200, SearchNoTweets);
+
+      const tweets = await service.searchTweetsByHashtag('unstoppable');
+      expect(tweets.length).toEqual(6);
+      expect(tweets[2].text).toEqual(tweets[5].text);
+      firstPageScope.done();
+      secondsPageScope.done();
+      thirdEmptyPageScope.done();
+    });
+
+    it('should throw exception if can not receive all tweets by provided hashtag', async () => {
+      nock(config.TWITTER.API_URL)
+        .get(twitterSearchPath)
+        .query({
+          ...queryMatcher,
+          max_id: '',
+          q: '#unstoppable -filter:retweets',
+        })
+        .reply(200, SearchMultipleTweets);
+
+      const expectedMaxId = qs.parse(
+        SearchMultipleTweets.search_metadata.next_results,
+        { ignoreQueryPrefix: true },
+      ).max_id;
+      const infinityPagesScope = nock(config.TWITTER.API_URL)
+        .get(twitterSearchPath)
+        .query({
+          ...queryMatcher,
+          q: '#unstoppable -filter:retweets',
+          max_id: expectedMaxId,
+        })
+        .reply(200, SearchMultipleTweets);
+      infinityPagesScope.persist();
+
+      try {
+        await service.searchTweetsByHashtag('unstoppable');
+        fail('Should fail');
+      } catch (e) {
+        expect(e).toBeInstanceOf(TooMuchTweetsInResponseError);
+      }
+      infinityPagesScope.persist(false);
     });
   });
 });

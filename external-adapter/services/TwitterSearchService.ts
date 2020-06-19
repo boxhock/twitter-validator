@@ -1,5 +1,5 @@
 import config from '../config';
-import { RestClient } from 'typed-rest-client/RestClient';
+import { IRestResponse, RestClient } from 'typed-rest-client/RestClient';
 import {
   IHttpClient,
   IHttpClientResponse,
@@ -9,6 +9,7 @@ import {
 import { Base64 } from 'js-base64';
 import * as _ from 'lodash';
 import { RequestOptions } from 'http';
+import qs from 'qs';
 
 type Tweet = {
   text: string;
@@ -17,16 +18,24 @@ type Tweet = {
   };
 };
 
-type Tweets = {
+type TweetsResult = {
   statuses: Tweet[];
+  search_metadata: {
+    next_results: string;
+    count: number;
+  };
 };
 
 export class InvalidTwitterHashtagError extends Error {}
 
+export class TooMuchTweetsInResponseError extends Error {}
+
 export default class TwitterSearchService {
   private readonly invalidHashtagDetector: RegExp = /[^\w]/;
+  private readonly searchRequestsAllowed = 5;
 
   constructor(
+    private readonly tweetsPerRequest = 100,
     private readonly client: RestClient = new RestClient(
       null,
       `${config.TWITTER.API_URL}`,
@@ -41,25 +50,65 @@ export default class TwitterSearchService {
   ) {}
 
   async searchTweetsByHashtag(hashtag: string): Promise<Tweet[]> {
-    if (this.invalidHashtagDetector.test(hashtag)) {
-      throw new InvalidTwitterHashtagError('Invalid twitter hashtag provided');
+    this.validateHashtag(hashtag);
+    let tweetMaxId = '';
+    const tweets: Tweet[] = [];
+    for (
+      let requestsMade = 1;
+      requestsMade <= this.searchRequestsAllowed;
+      requestsMade++
+    ) {
+      const response = await this.makeSearchRequest(hashtag, tweetMaxId);
+      if (response.result === null) {
+        return [];
+      }
+      tweets.push(...response.result.statuses);
+      if (this.isLastPage(response)) {
+        return tweets;
+      }
+      tweetMaxId = this.getNextTweetMaxId(response);
     }
-    const tweets = await this.client.get<Tweets>(
+
+    throw new TooMuchTweetsInResponseError(
+      `Can't receive all tweets by #${hashtag}. More than ${
+        this.tweetsPerRequest * this.searchRequestsAllowed
+      } tweets found.`,
+    );
+  }
+
+  private async makeSearchRequest(hashtag: string, tweetMaxId: string) {
+    return await this.client.get<TweetsResult>(
       `/${config.TWITTER.API_VERSION}/search/tweets.json`,
       {
         queryParameters: {
           params: {
             q: `#${hashtag} -filter:retweets`,
-            tweet_mode: 'extended',
             result_type: 'recent',
             include_entities: 'false',
-            count: '100',
+            count: this.tweetsPerRequest,
+            max_id: tweetMaxId,
           },
         },
       },
     );
+  }
 
-    return tweets.result ? tweets.result.statuses : [];
+  private getNextTweetMaxId(response: IRestResponse<TweetsResult>): string {
+    const nextResultsQuery = qs.parse(
+      response.result!.search_metadata.next_results,
+      { ignoreQueryPrefix: true },
+    );
+    return (nextResultsQuery.max_id as string) || '';
+  }
+
+  private isLastPage(response: IRestResponse<TweetsResult>): boolean {
+    return response.result!.statuses.length < this.tweetsPerRequest;
+  }
+
+  private validateHashtag(hashtag: string) {
+    if (this.invalidHashtagDetector.test(hashtag)) {
+      throw new InvalidTwitterHashtagError('Invalid twitter hashtag provided');
+    }
   }
 }
 
