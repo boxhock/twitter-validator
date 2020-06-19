@@ -30,7 +30,7 @@ describe('TwitterSearchService', () => {
   describe('Invalid parameters', () => {
     it('should throw exception if invalid hashtag provided', async () => {
       try {
-        await service.searchTweetsByHashtag('$#@%%');
+        await service.searchTweets({ hashtag: '$#@%%', text: 'test.crypto' });
         fail('Should fail');
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidTwitterHashtagError);
@@ -43,13 +43,14 @@ describe('TwitterSearchService', () => {
       const searchScope = nock(config.TWITTER.API_URL)
         .get(twitterSearchPath)
         .query({
-          q: '#914c1ba9ce114623aa4d5ddb4897dff2 -filter:retweets',
+          q: '#914c1ba9ce114623aa4d5ddb4897dff2 test.crypto -filter:retweets',
           ...queryMatcher,
         })
         .reply(200, SearchNoTweets);
-      const tweets = await service.searchTweetsByHashtag(
-        '914c1ba9ce114623aa4d5ddb4897dff2',
-      );
+      const tweets = await service.searchTweets({
+        hashtag: '914c1ba9ce114623aa4d5ddb4897dff2',
+        text: 'test.crypto',
+      });
       searchScope.done();
       expect(tweets.length).toEqual(0);
     });
@@ -58,11 +59,14 @@ describe('TwitterSearchService', () => {
       const searchScope = nock(config.TWITTER.API_URL)
         .get(twitterSearchPath)
         .query({
-          q: '#dsaSe2FSAFfs -filter:retweets',
+          q: '#dsaSe2FSAFfs test.crypto -filter:retweets',
           ...queryMatcher,
         })
         .reply(200, SearchSingleTweet);
-      const tweets = await service.searchTweetsByHashtag('dsaSe2FSAFfs');
+      const tweets = await service.searchTweets({
+        hashtag: 'dsaSe2FSAFfs',
+        text: 'test.crypto',
+      });
       searchScope.done();
       expect(tweets.length).toEqual(1);
       expect(tweets[0].text).toEqual(SearchSingleTweet.statuses[0].text);
@@ -75,11 +79,13 @@ describe('TwitterSearchService', () => {
       const searchScope = nock(config.TWITTER.API_URL)
         .get(twitterSearchPath)
         .query({
-          q: '#multipletweetsid -filter:retweets',
+          q: '#multipletweetsid  -filter:retweets',
           ...queryMatcher,
         })
         .reply(200, SearchMultipleTweets);
-      const tweets = await service.searchTweetsByHashtag('multipletweetsid');
+      const tweets = await service.searchTweets({
+        hashtag: 'multipletweetsid',
+      });
       searchScope.done();
       expect(tweets.length).toEqual(3);
     });
@@ -101,7 +107,7 @@ describe('TwitterSearchService', () => {
       })
         .get(twitterSearchPath)
         .query({
-          q: '#notweets -filter:retweets',
+          q: '#notweets  -filter:retweets',
           ...queryMatcher,
         })
         .reply(401);
@@ -124,12 +130,12 @@ describe('TwitterSearchService', () => {
       })
         .get(twitterSearchPath)
         .query({
-          q: '#notweets -filter:retweets',
+          q: '#notweets  -filter:retweets',
           ...queryMatcher,
         })
         .reply(200);
 
-      await service.searchTweetsByHashtag('notweets');
+      await service.searchTweets({ hashtag: 'notweets' });
       nonAuthenticatedScope.done();
       getCredentialsScope.done();
       authenticatedScope.done();
@@ -142,19 +148,16 @@ describe('TwitterSearchService', () => {
       })
         .get(twitterSearchPath)
         .query({
-          q: '#sametoken -filter:retweets',
+          q: '#sametoken  -filter:retweets',
           ...queryMatcher,
         })
         .reply(200);
-      await service.searchTweetsByHashtag('sametoken');
+      await service.searchTweets({ hashtag: 'sametoken' });
       searchWithTheSameTokenScope.done();
     });
   });
 
   describe('Pagination', () => {
-    let service: TwitterSearchService;
-    let queryMatcher: DataMatcherMap;
-
     beforeEach(() => {
       const tweetsPerRequest = SearchMultipleTweets.statuses.length;
       service = new TwitterSearchService(tweetsPerRequest);
@@ -175,7 +178,7 @@ describe('TwitterSearchService', () => {
         .query({
           ...queryMatcher,
           max_id: '',
-          q: '#unstoppable -filter:retweets',
+          q: '#unstoppable beresnev.crypto -filter:retweets',
         })
         .reply(200, SearchMultipleTweets);
 
@@ -183,7 +186,7 @@ describe('TwitterSearchService', () => {
         .get(twitterSearchPath)
         .query({
           ...queryMatcher,
-          q: '#unstoppable -filter:retweets',
+          q: '#unstoppable beresnev.crypto -filter:retweets',
           max_id: expectedMaxId,
         })
         .reply(200, SearchMultipleTweets);
@@ -192,12 +195,15 @@ describe('TwitterSearchService', () => {
         .get(twitterSearchPath)
         .query({
           ...queryMatcher,
-          q: '#unstoppable -filter:retweets',
+          q: '#unstoppable beresnev.crypto -filter:retweets',
           max_id: expectedMaxId,
         })
         .reply(200, SearchNoTweets);
 
-      const tweets = await service.searchTweetsByHashtag('unstoppable');
+      const tweets = await service.searchTweets({
+        hashtag: 'unstoppable',
+        text: 'beresnev.crypto',
+      });
       expect(tweets.length).toEqual(6);
       expect(tweets[2].text).toEqual(tweets[5].text);
       firstPageScope.done();
@@ -211,7 +217,7 @@ describe('TwitterSearchService', () => {
         .query({
           ...queryMatcher,
           max_id: '',
-          q: '#unstoppable -filter:retweets',
+          q: '#unstoppable beresnev.crypto -filter:retweets',
         })
         .reply(200, SearchMultipleTweets);
 
@@ -223,14 +229,17 @@ describe('TwitterSearchService', () => {
         .get(twitterSearchPath)
         .query({
           ...queryMatcher,
-          q: '#unstoppable -filter:retweets',
+          q: '#unstoppable beresnev.crypto -filter:retweets',
           max_id: expectedMaxId,
         })
         .reply(200, SearchMultipleTweets);
       infinityPagesScope.persist();
 
       try {
-        await service.searchTweetsByHashtag('unstoppable');
+        await service.searchTweets({
+          hashtag: 'unstoppable',
+          text: 'beresnev.crypto',
+        });
         fail('Should fail');
       } catch (e) {
         expect(e).toBeInstanceOf(TooMuchTweetsInResponseError);

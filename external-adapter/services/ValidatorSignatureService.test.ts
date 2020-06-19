@@ -1,5 +1,6 @@
 import ValidatorSignatureService, {
   InvalidPrivateKeyError,
+  SignatureParameters,
 } from './ValidatorSignatureService';
 import Web3 from 'web3';
 import config from '../config';
@@ -8,7 +9,7 @@ const web3 = new Web3();
 
 describe('ValidatorSignatureService', () => {
   const service = new ValidatorSignatureService();
-  let signatureParameters: any;
+  let signatureParameters: SignatureParameters;
 
   beforeEach(() => {
     signatureParameters = {
@@ -41,7 +42,7 @@ describe('ValidatorSignatureService', () => {
       config.VALIDATOR_PRIVATE_KEY,
     ).address;
     const signature = service.sign(signatureParameters);
-    const message = [
+    const messageToSign = [
       signatureParameters.domainName,
       signatureParameters.domainOwner,
       signatureParameters.domainRecordKey,
@@ -49,7 +50,10 @@ describe('ValidatorSignatureService', () => {
     ]
       .map((value) => web3.utils.keccak256(value))
       .reduce((message, hashedValue) => message + hashedValue, '');
-    const recoveredAddress = web3.eth.accounts.recover(message, signature);
+    const recoveredAddress = web3.eth.accounts.recover(
+      messageToSign,
+      signature,
+    );
     expect(recoveredAddress).toEqual(expectedAddress);
   });
 

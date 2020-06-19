@@ -11,11 +11,16 @@ import * as _ from 'lodash';
 import { RequestOptions } from 'http';
 import qs from 'qs';
 
-type Tweet = {
+export type Tweet = {
   text: string;
   user: {
     screen_name: string;
   };
+};
+
+export type SearchQuery = {
+  hashtag: string;
+  text?: string;
 };
 
 type TweetsResult = {
@@ -49,8 +54,8 @@ export default class TwitterSearchService {
     ),
   ) {}
 
-  async searchTweetsByHashtag(hashtag: string): Promise<Tweet[]> {
-    this.validateHashtag(hashtag);
+  async searchTweets(searchQuery: SearchQuery): Promise<Tweet[]> {
+    this.validateHashtag(searchQuery.hashtag);
     let tweetMaxId = '';
     const tweets: Tweet[] = [];
     for (
@@ -58,7 +63,7 @@ export default class TwitterSearchService {
       requestsMade <= this.searchRequestsAllowed;
       requestsMade++
     ) {
-      const response = await this.makeSearchRequest(hashtag, tweetMaxId);
+      const response = await this.makeSearchRequest(searchQuery, tweetMaxId);
       if (response.result === null) {
         return [];
       }
@@ -70,19 +75,25 @@ export default class TwitterSearchService {
     }
 
     throw new TooMuchTweetsInResponseError(
-      `Can't receive all tweets by #${hashtag}. More than ${
+      `Can't receive all tweets by #${searchQuery.hashtag} ${
+        searchQuery.text
+      }. More than ${
         this.tweetsPerRequest * this.searchRequestsAllowed
       } tweets found.`,
     );
   }
 
-  private async makeSearchRequest(hashtag: string, tweetMaxId: string) {
+  private async makeSearchRequest(
+    searchQuery: SearchQuery,
+    tweetMaxId: string,
+  ): Promise<IRestResponse<TweetsResult>> {
+    const text = searchQuery.text ?? '';
     return await this.client.get<TweetsResult>(
       `/${config.TWITTER.API_VERSION}/search/tweets.json`,
       {
         queryParameters: {
           params: {
-            q: `#${hashtag} -filter:retweets`,
+            q: `#${searchQuery.hashtag} ${text} -filter:retweets`,
             result_type: 'recent',
             include_entities: 'false',
             count: this.tweetsPerRequest,
@@ -105,7 +116,7 @@ export default class TwitterSearchService {
     return response.result!.statuses.length < this.tweetsPerRequest;
   }
 
-  private validateHashtag(hashtag: string) {
+  private validateHashtag(hashtag: string): void {
     if (this.invalidHashtagDetector.test(hashtag)) {
       throw new InvalidTwitterHashtagError('Invalid twitter hashtag provided');
     }
@@ -128,14 +139,14 @@ class TwitterAuthenticationHandler implements IRequestHandler {
     }
   }
 
-  canHandleAuthentication(response: IHttpClientResponse): boolean {
+  canHandleAuthentication(): boolean {
     return true;
   }
 
   async handleAuthentication(
     httpClient: IHttpClient,
     requestInfo: IRequestInfo,
-    objs: any,
+    objs: string,
   ): Promise<IHttpClientResponse> {
     this.accessToken = await this.requestAccessToken(httpClient);
     const authenticatedRequestInfo = requestInfo;

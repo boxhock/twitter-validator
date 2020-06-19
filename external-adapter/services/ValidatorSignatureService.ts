@@ -3,7 +3,7 @@ import config from '../config';
 
 const web3 = new Web3();
 
-type SignatureParameters = {
+export type SignatureParameters = {
   domainName: string;
   domainOwner: string;
   domainRecordKey: string;

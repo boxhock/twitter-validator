@@ -2,7 +2,7 @@ import { Action } from 'routing-controllers';
 import config from '../config';
 import * as _ from 'lodash';
 
-const allowedToBearer = (action: Action) => {
+const allowedToBearer = (action: Action): boolean => {
   const bearerToken =
     action.request.headers[config.AUTHENTICATION_TOKEN_HEADER] ||
     action.request.headers[config.AUTHENTICATION_TOKEN_HEADER.toLowerCase()];
