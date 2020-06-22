@@ -9,7 +9,7 @@ const config = {
   },
   AUTHENTICATION_TOKEN: process.env.AUTHENTICATION_TOKEN as string,
   AUTHENTICATION_TOKEN_HEADER: 'Bearer',
-  LISTEN_HTTP_PORT: process.env.LISTEN_HTTP_PORT || (3000 as number),
+  PORT: process.env.LISTEN_HTTP_PORT || (3000 as number),
 } as const;
 
 export default config;

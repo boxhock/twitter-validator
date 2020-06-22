@@ -1,7 +1,7 @@
 import config from '../config';
 import { RestClient } from 'typed-rest-client/RestClient';
 
-type JobRun = {
+export type JobRun = {
   data: {
     id: string;
   };

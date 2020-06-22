@@ -39,11 +39,10 @@ All environment variables that needed by docker image specified at
 #### Run docker image
 
 ```shell script
-docker run -p 3000:3000 -e LISTEN_HTTP_PORT=3000 -e FIRST_ENV=value -e SECOND_ENV=val <image name>
+docker run -p 3000:3000 -e PORT=3000 -e FIRST_ENV=value -e SECOND_ENV=val <image name>
 ```
 
-Note: port can be different depends on `LISTEN_HTTP_PORT` environment variable
-value.
+Note: port can be different depends on `PORT` environment variable value.
 
 ## Development
 

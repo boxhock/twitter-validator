@@ -36,8 +36,8 @@ export default class TwitterDetectorService {
   ): void {
     if (
       !firstTweetPosted ||
-      this.notIncludeUniqueHashtag(request, firstTweetPosted as Tweet) ||
-      this.notIncludeText(request, firstTweetPosted as Tweet)
+      this.hashtagNotValid(request, firstTweetPosted as Tweet) ||
+      this.textNotValid(request, firstTweetPosted as Tweet)
     ) {
       throw new TweetIsNotValidError(
         `Tweet does not includes unique hashtag or text`,
@@ -45,7 +45,7 @@ export default class TwitterDetectorService {
     }
   }
 
-  private notIncludeText(
+  private textNotValid(
     request: ValidationRequest,
     firstTweetPosted: Tweet,
   ): boolean {
@@ -55,7 +55,7 @@ export default class TwitterDetectorService {
     return !firstTweetPosted.text.includes(request.tweetText);
   }
 
-  private notIncludeUniqueHashtag(
+  private hashtagNotValid(
     request: ValidationRequest,
     firstTweetPosted: Tweet,
   ): boolean {

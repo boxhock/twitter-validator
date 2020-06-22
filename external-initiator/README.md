@@ -50,6 +50,6 @@ set via `AUTHENTICATION_TOKEN` environment variable on server.
 | `CHAINLINK_JOB_ID`        | ID of the job created on `Chainlink Node`. `External Initiator` will initiate this job when get incoming request | `Yes`                |
 | `CHAINLINK_NODE_URL`      | `Chainlink Node` URL                                                                                             | `Yes`                |
 | `AUTHENTICATION_TOKEN`    | Token used by service to authorise incoming requests. Provide a strong random string for this variable.          | `Yes`                |
-| `LISTEN_HTTP_PORT`        | Port for handling incoming HTTP requests                                                                         | `No` `Default: 3000` |
+| `PORT`                    | Port for handling incoming HTTP requests                                                                         | `No` `Default: 3000` |
 
 [Test environment varibles example](./test.env)
