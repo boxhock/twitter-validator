@@ -35,6 +35,8 @@ export class InvalidTwitterHashtagError extends Error {}
 
 export class TooMuchTweetsInResponseError extends Error {}
 
+export class AuthenticationError extends Error {}
+
 export default class TwitterSearchService {
   private readonly invalidHashtagDetector: RegExp = /[^\w]/;
   private readonly searchRequestsAllowed = 5;
@@ -173,7 +175,7 @@ class TwitterAuthenticationHandler implements IRequestHandler {
       },
     );
     if (tokenResponse.message.statusCode !== 200) {
-      throw new Error(await tokenResponse.readBody());
+      throw new AuthenticationError(await tokenResponse.readBody());
     }
     const tokenJson = JSON.parse(await tokenResponse.readBody());
     return tokenJson.access_token;

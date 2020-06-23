@@ -1,4 +1,5 @@
 import {
+  IsDefined,
   IsEthereumAddress,
   IsFQDN,
   IsNotEmpty,
@@ -31,6 +32,7 @@ export default class TwitterValidationRequest {
   @IsNotEmpty()
   id: string;
 
+  @IsDefined()
   @ValidateNested()
   data: ValidationData;
 }

@@ -6,7 +6,7 @@ const config = {
     API_SECRET: process.env.TWITTER_API_SECRET as string,
   },
   VALIDATOR_PRIVATE_KEY: process.env.VALIDATOR_PRIVATE_KEY as string,
-  PORT: process.env.PORT || (3000 as number),
+  PORT: Number(process.env.PORT || 3000),
 } as const;
 
 export default config;

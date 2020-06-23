@@ -27,7 +27,7 @@ export default class TwitterController {
     );
     const validationSignature = this.validatorSignatureService.sign({
       domainName: data.domainName,
-      domainOwner: data.domainName,
+      domainOwner: data.domainOwner,
       domainRecordKey: data.twitterUsernameKey,
       domainRecordValue: twitterUsername,
     });
