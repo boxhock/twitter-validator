@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import {
   Middleware,
   ExpressErrorMiddlewareInterface,
-  HttpError,
+  BadRequestError,
 } from 'routing-controllers';
 import { Request, Response } from 'express';
 
@@ -32,8 +32,8 @@ export default class ChainlinkAdapterErrorHandler
       errorData: {},
       jobRunID: request.body.id,
     };
-    if (error instanceof HttpError) {
-      const httpError = error as HttpError;
+    if (error instanceof BadRequestError) {
+      const httpError = error as BadRequestError;
       errorResponse.errorData = httpError;
       response.status(httpError.httpCode);
     } else {
