@@ -7,7 +7,7 @@
     "node": "12.18.0"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p . --outDir ./dist",
     "dev": "dotenv -e test.env -- ts-node-dev -T index.ts",
     "test": "dotenv -e test.env -- jest --config jest.config.js --logHeapUsage"
   },

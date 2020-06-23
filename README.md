@@ -19,7 +19,7 @@ account on Ethereum blockchain using .crypto domains.
 All packages prodives Dockerfile. You need to build docker image before running
 the module.
 
-### Build
+### Build docker image
 
 Run from repository root.
 
