@@ -4,41 +4,47 @@ import TwitterValidationRequest from '../dto/twitter/TwitterValidationRequest';
 import TwitterDetectorService from '../services/TwitterDetectorService';
 import ValidatorSignatureService from '../services/ValidatorSignatureService';
 import TwitterValidationResponse from '../dto/twitter/TwitterValidationResponse';
+import TransactionDataEncodeService from '../services/TransactionDataEncodeService';
 
 @JsonController()
 export default class TwitterController {
   constructor(
     private readonly twitterDetectorService: TwitterDetectorService = new TwitterDetectorService(),
     private readonly validatorSignatureService: ValidatorSignatureService = new ValidatorSignatureService(),
+    private readonly transactionDataEncodeService: TransactionDataEncodeService = new TransactionDataEncodeService(),
   ) {}
 
   @Post('/twitter/validate')
   async validateTwitter(
     @Body() dto: TwitterValidationRequest,
   ): Promise<TwitterValidationResponse> {
-    const requestData = dto.data;
+    const data = dto.data;
     const twitterUsername = await this.twitterDetectorService.detectUsernameByTweet(
       {
-        userUniqueHashtag: requestData.validationCode,
-        tweetText: requestData.domainName,
+        userUniqueHashtag: data.validationCode,
+        tweetText: data.domainName,
       },
     );
     const validationSignature = this.validatorSignatureService.sign({
-      domainName: requestData.domainName,
-      domainOwner: requestData.domainName,
-      domainRecordKey: requestData.twitterUsernameKey,
+      domainName: data.domainName,
+      domainOwner: data.domainName,
+      domainRecordKey: data.twitterUsernameKey,
       domainRecordValue: twitterUsername,
     });
+    const transactionData = this.transactionDataEncodeService.encodeDomainValidationData(
+      {
+        domainName: data.domainName,
+        records: {
+          [data.twitterUsernameKey]: twitterUsername,
+          [data.validatorSignatureKey]: validationSignature,
+        },
+      },
+    );
 
-    // todo we need to encode all parameters for function call into hex string.
     return {
       jobRunID: dto.id,
       data: {
-        domainName: requestData.domainName,
-        twitterUsernameKey: dto.data.twitterUsernameKey,
-        twitterUsernameValue: twitterUsername,
-        validatorSignatureKey: dto.data.validatorSignatureKey,
-        validatorSignatureValue: validationSignature,
+        transactionData,
       },
     };
   }
