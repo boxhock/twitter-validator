@@ -9,6 +9,7 @@ import {
 import ChainlinkJobRunService, {
   JobRun,
 } from '../services/ChainlinkJobRunService';
+import JobRunRequest from '../dto/chainlink/JobRunRequest';
 
 @JsonController()
 export default class JobController {
@@ -19,7 +20,7 @@ export default class JobController {
   @Authorized()
   @OnNull(500)
   @Post('/runs')
-  async post(@Body() body: object): Promise<JobRun | null> {
+  async post(@Body() body: JobRunRequest): Promise<JobRun | null> {
     return this.jobRunService.createJobRun(body);
   }
 }
