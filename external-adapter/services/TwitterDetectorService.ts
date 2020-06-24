@@ -40,7 +40,7 @@ export default class TwitterDetectorService {
       this.textNotValid(request, firstTweetPosted as Tweet)
     ) {
       throw new TweetIsNotValidError(
-        `Tweet does not includes unique hashtag or text`,
+        `Tweet ${firstTweetPosted} does not includes #${request.userUniqueHashtag} or ${request.tweetText}`,
       );
     }
   }

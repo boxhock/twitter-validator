@@ -42,14 +42,8 @@ describe('ValidatorSignatureService', () => {
       config.VALIDATOR_PRIVATE_KEY,
     ).address;
     const signature = service.sign(signatureParameters);
-    const messageToSign = [
-      signatureParameters.domainName,
-      signatureParameters.domainOwner,
-      signatureParameters.domainRecordKey,
-      signatureParameters.domainRecordValue,
-    ]
-      .map((value) => web3.utils.keccak256(value))
-      .reduce((message, hashedValue) => message + hashedValue, '');
+    const messageToSign =
+      '0xc2205449ba055ad2e6cd2d70b65a7747a42e665a0f117e623f97e48879b7f9510xb9dad69db0f578edc4cad1a5009df28aa8c7f1cfac6e3c95e1549bef16b7ec990x27a3e023b3b6a9bfeeaa699a7e1fdecafbc11c3cdae33c06270517b5a61a4ead0x14851888cf824d1588209f3afbbfa9d2275da13e228c93765dd00d895530ded1';
     const recoveredAddress = web3.eth.accounts.recover(
       messageToSign,
       signature,

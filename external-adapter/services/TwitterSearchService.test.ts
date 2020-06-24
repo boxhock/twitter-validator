@@ -31,7 +31,7 @@ describe('TwitterSearchService', () => {
     it('should throw exception if invalid hashtag provided', async () => {
       try {
         await service.searchTweets({ hashtag: '$#@%%', text: 'test.crypto' });
-        fail('Should fail');
+        fail('Should fail in invalid hashtag provided but it was not');
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidTwitterHashtagError);
       }
@@ -240,7 +240,9 @@ describe('TwitterSearchService', () => {
           hashtag: 'unstoppable',
           text: 'beresnev.crypto',
         });
-        fail('Should fail');
+        fail(
+          'Should if too much tweets found by provided hashtag and text but it was not',
+        );
       } catch (e) {
         expect(e).toBeInstanceOf(TooMuchTweetsInResponseError);
       }

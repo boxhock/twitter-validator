@@ -1,14 +1,15 @@
 import {
   IsDefined,
   IsEthereumAddress,
-  IsFQDN,
   IsNotEmpty,
   IsString,
+  Matches,
   ValidateNested,
 } from 'class-validator';
 
 class ValidationData {
-  @IsFQDN({ require_tld: false, allow_underscores: true })
+  @IsString()
+  @Matches(/(crypto)$/)
   domainName: string;
 
   @IsEthereumAddress()

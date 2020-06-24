@@ -80,7 +80,7 @@ describe('TwitterDetectorService', () => {
       await twitterDetectorService.detectUsernameByTweet({
         userUniqueHashtag: 'tag',
       });
-      fail('Should fail');
+      fail('Should if no tweets found but it was not');
     } catch (e) {
       expect(e).toBeInstanceOf(NoTweetsFoundError);
     }
@@ -99,7 +99,7 @@ describe('TwitterDetectorService', () => {
       await twitterDetectorService.detectUsernameByTweet({
         userUniqueHashtag: 'invalidtag',
       });
-      fail('Should fail');
+      fail('Expected search for #invalidtag to throw exception but was not');
     } catch (e) {
       expect(e).toBeInstanceOf(TweetIsNotValidError);
     }
@@ -119,7 +119,9 @@ describe('TwitterDetectorService', () => {
         userUniqueHashtag: 'valid',
         tweetText: 'beresnev.crypto',
       });
-      fail('Should fail');
+      fail(
+        'Expected search for beresnev.crypto to throw exception but was not',
+      );
     } catch (e) {
       expect(e).toBeInstanceOf(TweetIsNotValidError);
     }
