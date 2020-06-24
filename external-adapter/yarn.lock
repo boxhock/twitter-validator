@@ -1199,7 +1199,7 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.6, bn.js@^
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
   integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
 
-bn.js@^5.1.1:
+bn.js@^5.1.1, bn.js@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.2.tgz#c9686902d3c9a27729f43ab10f9d79c2004da7b0"
   integrity sha512-40rZaf3bUNKTVYu9sIeeEGOg7g14Yvnj9kH7b50EiwX0Q7A6umbvfI5tvHaOERH0XigqKkfLkFQxzb4e6CIXnA==
@@ -2210,6 +2210,19 @@ ethereumjs-util@^6.0.0:
     keccak "^2.0.0"
     rlp "^2.2.3"
     secp256k1 "^3.0.1"
+
+ethereumjs-util@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-7.0.2.tgz#7e0d9fcd225ece6e49ee4ea65609d124715f1d15"
+  integrity sha512-ATAP02eJLpAlWGfiKQddNrRfZpwXiTFhRN2EM/yLXMCdBW/xjKYblNKcx8GLzzrjXg0ymotck+lam1nuV90arQ==
+  dependencies:
+    "@types/bn.js" "^4.11.3"
+    bn.js "^5.1.2"
+    create-hash "^1.1.2"
+    ethjs-util "0.1.6"
+    keccak "^3.0.0"
+    rlp "^2.2.4"
+    secp256k1 "^4.0.1"
 
 ethjs-unit@0.1.6:
   version "0.1.6"
@@ -3681,6 +3694,14 @@ keccak@^2.0.0:
     nan "^2.14.0"
     safe-buffer "^5.2.0"
 
+keccak@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/keccak/-/keccak-3.0.0.tgz#420d1de4a38a04f33ff8401f0535fb93756861d4"
+  integrity sha512-/4h4FIfFEpTEuySXi/nVFM5rqSKPnnhI7cL4K3MFSwoI3VyM7AhPSq3SsysARtnEBEeIKMBUWD8cTh9nHE8AkA==
+  dependencies:
+    node-addon-api "^2.0.0"
+    node-gyp-build "^4.2.0"
+
 keyv@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-3.1.0.tgz#ecc228486f69991e49e9476485a5be1e8fc5c4d9"
@@ -4138,10 +4159,20 @@ nock@^12.0.3:
     lodash "^4.17.13"
     propagate "^2.0.0"
 
+node-addon-api@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.1.tgz#4fd0931bf6d7e48b219ff3e6abc73cbb0252b7a3"
+  integrity sha512-2WVfwRfIr1AVn3dRq4yRc2Hn35ND+mPJH6inC6bjpYCZVrpXPB4j3T6i//OGVfqVsR1t/X/axRulDsheq4F0LQ==
+
 node-fetch@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
+
+node-gyp-build@^4.2.0:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.2.2.tgz#3f44b65adaafd42fb6c3d81afd630e45c847eb66"
+  integrity sha512-Lqh7mrByWCM8Cf9UPqpeoVBBo5Ugx+RKu885GAzmLBVYjeywScxHXPGLa4JfYNZmcNGwzR0Glu5/9GaQZMFqyA==
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -4889,7 +4920,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rlp@^2.2.3:
+rlp@^2.2.3, rlp@^2.2.4:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/rlp/-/rlp-2.2.5.tgz#b0577b763e909f21a9dea31b4b235b2393f15ef1"
   integrity sha512-y1QxTQOp0OZnjn19FxBmped4p+BSKPHwGndaqrESseyd2xXZtcgR3yuTIosh8CaMaOii9SKIYerBXnV/CpJ3qw==
@@ -4973,6 +5004,15 @@ secp256k1@^3.0.1:
     elliptic "^6.5.2"
     nan "^2.14.0"
     safe-buffer "^5.1.2"
+
+secp256k1@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/secp256k1/-/secp256k1-4.0.1.tgz#b9570ca26ace9e74c3171512bba253da9c0b6d60"
+  integrity sha512-iGRjbGAKfXMqhtdkkuNxsgJQfJO8Oo78Rm7DAvsG3XKngq+nJIOGqrCSXcQqIVsmCj0wFanE5uTKFxV3T9j2wg==
+  dependencies:
+    elliptic "^6.5.2"
+    node-addon-api "^2.0.0"
+    node-gyp-build "^4.2.0"
 
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0:
   version "5.7.1"

@@ -8,6 +8,15 @@ export type SignatureParameters = {
   domainRecordValue: string;
 };
 
+export type SignResult = {
+  r: string;
+  s: string;
+  v: string;
+  signature: string;
+  message: string;
+  messageHash: string;
+};
+
 export class InvalidPrivateKeyError extends Error {}
 
 export default class ValidatorSignatureService {
@@ -24,7 +33,7 @@ export default class ValidatorSignatureService {
     }
   }
 
-  sign(parameters: SignatureParameters): string {
+  sign(parameters: SignatureParameters): SignResult {
     const messageToSign = [
       parameters.domainName,
       parameters.domainOwner,
@@ -37,6 +46,7 @@ export default class ValidatorSignatureService {
       messageToSign,
       this.privateKey,
     );
-    return signResult.signature;
+
+    return signResult as SignResult;
   }
 }
