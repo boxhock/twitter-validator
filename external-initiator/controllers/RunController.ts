@@ -5,7 +5,6 @@ import {
   JsonController,
   Authorized,
   OnNull,
-  InternalServerError,
 } from 'routing-controllers';
 import ChainlinkJobRunService, {
   JobRun,
@@ -21,10 +20,6 @@ export default class JobController {
   @OnNull(500)
   @Post('/runs')
   async post(@Body() body: object): Promise<JobRun | null> {
-    try {
-      return this.jobRunService.createJobRun(body);
-    } catch (e) {
-      throw new InternalServerError(e.message);
-    }
+    return this.jobRunService.createJobRun(body);
   }
 }
