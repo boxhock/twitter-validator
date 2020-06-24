@@ -9,7 +9,7 @@ import { Request, Response } from 'express';
 type ErrorResponse = {
   status: string;
   error: string;
-  errorData: object;
+  data: object;
   jobRunID: string;
 };
 
@@ -29,12 +29,12 @@ export default class ChainlinkAdapterErrorHandler
     const errorResponse: ErrorResponse = {
       status: 'errored',
       error: error.message,
-      errorData: {},
+      data: {},
       jobRunID: request.body.id,
     };
     if (error instanceof BadRequestError) {
       const httpError = error as BadRequestError;
-      errorResponse.errorData = httpError;
+      errorResponse.data = httpError;
       response.status(httpError.httpCode);
     } else {
       response.status(500);

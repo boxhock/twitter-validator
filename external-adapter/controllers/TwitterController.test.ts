@@ -2,43 +2,9 @@ import supertest from 'supertest';
 import application from '../utils/application';
 import config from '../config';
 import nock from 'nock';
-import * as _ from 'lodash';
 import SearchMultipleTweets from '../mocks/twitter/responses/SearchMultipleTweets.json';
 import SearchSingleTweet from '../mocks/twitter/responses/SearchSingleTweet.json';
 import SearchNoTweets from '../mocks/twitter/responses/SearchNoTweets.json';
-import ValidatorSignatureService from '../services/ValidatorSignatureService';
-import TransactionDataEncodeService from '../services/TransactionDataEncodeService';
-
-const validatorSignatureService = new ValidatorSignatureService();
-const transactionDataEncodeService = new TransactionDataEncodeService();
-
-function generateExpectedTransactionData(requestData: {
-  id: string;
-  data: {
-    domainName: string;
-    domainOwner: string;
-    validationCode: string;
-    twitterUsernameKey: string;
-    validatorSignatureKey: string;
-  };
-}) {
-  const twitterUsername = _.last(SearchMultipleTweets.statuses)!.user
-    .screen_name;
-  const signature = validatorSignatureService.sign({
-    domainName: requestData.data.domainName,
-    domainRecordValue: twitterUsername,
-    domainRecordKey: requestData.data.twitterUsernameKey,
-    domainOwner: requestData.data.domainOwner,
-  });
-
-  return transactionDataEncodeService.encodeDomainValidationData({
-    domainName: requestData.data.domainName,
-    records: {
-      [requestData.data.twitterUsernameKey]: twitterUsername,
-      [requestData.data.validatorSignatureKey]: signature,
-    },
-  });
-}
 
 describe('TwitterController', () => {
   describe('Validate Twitter', () => {
@@ -66,9 +32,8 @@ describe('TwitterController', () => {
           .post(validatePath)
           .expect(200)
           .send(request);
-        const expectedTransactionData = generateExpectedTransactionData(
-          request,
-        );
+        const expectedTransactionData =
+          '0xb72f443a17edf4a55f766cf3c83469e6f96494b16823a41a4acb25800f30310300000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001b76616c69646174696f6e2e747769747465722e757365726e616d650000000000000000000000000000000000000000000000000000000000000000000000001c76616c69646174696f6e2e747769747465722e7369676e617475726500000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000a64657261696e6265726b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008430783965353831646633383765376138343433653636336435386663313736303034356433666362376165643234393633376163633737376262653837643561333934326431363130643265386538626437353066643533633230643466633661383536303737623235656439653538356439616161336439646535626365376238316200000000000000000000000000000000000000000000000000000000';
         expect(res.body.data.transactionData).toEqual(expectedTransactionData);
       });
 
