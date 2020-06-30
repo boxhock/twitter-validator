@@ -1,0 +1,36 @@
+{
+  "initiators": [
+    {
+      "type": "external",
+      "params": {
+        "name": "<External Initiator Name>"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "type": "<External Adapter Bridge Name>",
+      "confirmations": null,
+      "params": {}
+    },
+    {
+      "type": "copy",
+      "confirmations": null,
+      "params": {
+        "copyPath": ["transactionData"]
+      }
+    },
+    {
+      "type": "ethtx",
+      "confirmations": null,
+      "params": {
+        "format": "preformatted",
+        "address": "<Receiving Smart Contract Address>",
+        "dataPrefix": "",
+        "functionSelector": "setValidationData(string[],string[],uint256)"
+      }
+    }
+  ],
+  "startAt": "2020-02-09T15:13:03Z",
+  "endAt": null
+}
