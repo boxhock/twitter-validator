@@ -7,8 +7,8 @@ const config = {
     JOB_ID: process.env.CHAINLINK_JOB_ID as string,
     NODE_URL: process.env.CHAINLINK_NODE_URL as string,
   },
-  AUTHENTICATION_TOKEN: process.env.AUTHENTICATION_TOKEN as string,
-  AUTHENTICATION_TOKEN_HEADER: 'Bearer',
+  AUTHENTICATION_TOKEN: `Bearer ${process.env.AUTHENTICATION_TOKEN as string}`,
+  AUTHENTICATION_TOKEN_HEADER: 'Authorization',
   PORT: Number(process.env.PORT || 3000),
 } as const;
 

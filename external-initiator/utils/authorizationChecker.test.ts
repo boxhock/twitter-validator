@@ -6,7 +6,7 @@ describe('AuthorizationChecker', () => {
     const authorized = authorizationChecker({
       request: {
         headers: {
-          Bearer: config.AUTHENTICATION_TOKEN,
+          Authorization: config.AUTHENTICATION_TOKEN,
         },
       },
       response: {},
@@ -18,7 +18,7 @@ describe('AuthorizationChecker', () => {
     const authorized = authorizationChecker({
       request: {
         headers: {
-          Bearer: 'incorrect',
+          Authorization: 'incorrect',
         },
       },
       response: {},

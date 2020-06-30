@@ -22,7 +22,7 @@ describe('RunController', () => {
         .reply(200, JobRunCreated);
       const res = await supertest(application)
         .post('/runs')
-        .set('Bearer', config.AUTHENTICATION_TOKEN)
+        .set('Authorization', config.AUTHENTICATION_TOKEN)
         .expect(200)
         .send(request);
       expect(res.body).toEqual(JobRunCreated);
@@ -34,7 +34,7 @@ describe('RunController', () => {
         .reply(404);
       await supertest(application)
         .post('/runs')
-        .set('Bearer', config.AUTHENTICATION_TOKEN)
+        .set('Authorization', config.AUTHENTICATION_TOKEN)
         .expect(500)
         .send(request);
 
@@ -43,7 +43,7 @@ describe('RunController', () => {
         .reply(400);
       await supertest(application)
         .post('/runs')
-        .set('Bearer', config.AUTHENTICATION_TOKEN)
+        .set('Authorization', config.AUTHENTICATION_TOKEN)
         .expect(500)
         .send(request);
 
@@ -52,7 +52,7 @@ describe('RunController', () => {
         .reply(500);
       await supertest(application)
         .post('/runs')
-        .set('Bearer', config.AUTHENTICATION_TOKEN)
+        .set('Authorization', config.AUTHENTICATION_TOKEN)
         .expect(500)
         .send(request);
     });
@@ -66,7 +66,7 @@ describe('RunController', () => {
     it('should return 400 on invalid request', async () => {
       await supertest(application)
         .post('/runs')
-        .set('Bearer', config.AUTHENTICATION_TOKEN)
+        .set('Authorization', config.AUTHENTICATION_TOKEN)
         .expect(400)
         .send({ invalid: 'request' });
     });
