@@ -44,6 +44,9 @@ docker run -p 3000:3000 -e PORT=3000 -e FIRST_ENV=value -e SECOND_ENV=val <image
 
 Note: port can be different depends on `PORT` environment variable value.
 
+### API documentation
+Find api docs here: `<package name>/API.md`
+
 ### Chainlink Node configuration
 
 [Job Specification Example](./documentation/chainlink/JobSpecExample.json)
