@@ -20,6 +20,12 @@ yarn dev
 yarn test
 ```
 
+#### Generate / Update API documentation
+
+```shell script
+yarn generate-apidoc
+```
+
 ## Production
 
 #### Build for production
@@ -38,11 +44,15 @@ node `dist/index.js`
 
 #### The following environment variables need to be set:
 
-| Name                    | Description                                                                                                                                                      | Required             |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| Name                    | Description                                                                                                                                              | Required             |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `TWITTER_API_KEY`       | Twitter developer application api key. [Twitter documentation](https://developer.twitter.com/en/docs/basics/apps/guides/the-app-management-dashboard)    | `Yes`                |
 | `TWITTER_API_SECRET`    | Twitter developer application api secret. [Twitter documentation](https://developer.twitter.com/en/docs/basics/apps/guides/the-app-management-dashboard) | `Yes`                |
-| `VALIDATOR_PRIVATE_KEY` | Ethereum private key of the validator. All validator signatures will be created using this private key.                                                          | `Yes`                |
-| `PORT`                  | Port for handling incoming HTTP requests                                                                                                                         | `No` `Default: 3000` |
+| `VALIDATOR_PRIVATE_KEY` | Ethereum private key of the validator. All validator signatures will be created using this private key.                                                  | `Yes`                |
+| `PORT`                  | Port for handling incoming HTTP requests                                                                                                                 | `No` `Default: 3000` |
 
 [Test environment varibles example](./test.env)
+
+## API documentation
+
+[API documentation](./API.md)

@@ -4,10 +4,10 @@ import { RestClient } from 'typed-rest-client/RestClient';
 export type JobRun = {
   data: {
     id: string;
-  };
-  attributes: {
-    jobId: string;
-    createdAt: string;
+    attributes: {
+      jobId: string;
+      createdAt: string;
+    };
   };
 };
 

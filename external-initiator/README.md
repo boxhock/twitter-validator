@@ -20,6 +20,12 @@ yarn dev
 yarn test
 ```
 
+#### Generate / Update API documentation
+
+```shell script
+yarn generate-apidoc
+```
+
 ## Production
 
 #### Build for production
@@ -53,3 +59,7 @@ set via `AUTHENTICATION_TOKEN` environment variable on server.
 | `PORT`                    | Port for handling incoming HTTP requests                                                                         | `No` `Default: 3000` |
 
 [Test environment varibles example](./test.env)
+
+## API documentation
+
+[API documentation](./API.md)

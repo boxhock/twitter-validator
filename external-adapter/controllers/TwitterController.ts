@@ -14,6 +14,19 @@ export default class TwitterController {
     private readonly transactionDataEncodeService: TransactionDataEncodeService = new TransactionDataEncodeService(),
   ) {}
 
+  /**
+   @api {post} /twitter/validate Validate twitter account and return signature and twitter username packed as smart contract arguments (transaction data). This endpoint should be called by Chainlink Node as a part of the Job.
+   @apiName TwitterValidate
+   @apiGroup Twitter
+
+   @apiParam {String} id Job Run ID
+   @apiParam {Object} data
+   @apiParam {String} data.domainName Name of validated domain.
+   @apiParam {String} data.domainOwner Ethereum address of current domain owner.
+   @apiParam {String} data.validationCode Twitter unique hashtag used validation.
+   @apiParam {String} data.twitterUsernameKey `.crypto Resolver` key where twitter username will be set.
+   @apiParam {String} data.validatorSignatureKey `.crypto Resolver` key where validation signature will be placed.
+   */
   @Post('/twitter/validate')
   async validateTwitter(
     @Body() dto: TwitterValidationRequest,
