@@ -75,4 +75,12 @@ describe('ValidatorSignatureService', () => {
     const recoveredPublicKey = ecrecover(messageHash, v, r, s);
     expect(toBuffer(config.VALIDATOR_PUBLIC_KEY)).toEqual(recoveredPublicKey);
   });
+
+  it('should return different signature if parameters were changed', () => {
+    const signature = service.sign(signatureParameters);
+    signatureParameters.domainOwner =
+      '0x19631910D87516DB1f1fc2047C1393db0EB8b32E';
+    const newSignature = service.sign(signatureParameters);
+    expect(signature).not.toEqual(newSignature);
+  });
 });
