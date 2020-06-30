@@ -21,8 +21,8 @@ export default class TransactionDataEncodeService {
     const recordsValues = !_.isEmpty(records) ? Object.values(records) : [];
 
     return this.web3.eth.abi.encodeParameters(
-      ['uint256', 'string[]', 'string[]'],
-      [domainTokenId, recordsKeys, recordsValues],
+      ['string[]', 'string[]', 'uint256'],
+      [recordsKeys, recordsValues, domainTokenId],
     );
   }
 }

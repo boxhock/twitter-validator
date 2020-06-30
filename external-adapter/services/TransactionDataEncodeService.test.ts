@@ -14,8 +14,8 @@ function encodeData(
     resolution.namehash(domainName),
   );
   return web3.eth.abi.encodeParameters(
-    ['uint256', 'string[]', 'string[]'],
-    [domainTokenId, keys, values],
+    ['string[]', 'string[]', 'uint256'],
+    [keys, values, domainTokenId],
   );
 }
 
