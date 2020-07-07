@@ -27,7 +27,7 @@
         "format": "preformatted",
         "address": "<Receiving Smart Contract Address>",
         "dataPrefix": "",
-        "functionSelector": "setValidationData(string[],string[],uint256)"
+        "functionSelector": "setValidation(string,string,uint256)"
       }
     }
   ],

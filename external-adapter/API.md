@@ -21,12 +21,10 @@ POST /twitter/validate
 
 ### Parameters - `Parameter`
 
-| Name                       | Type     | Description                                                                         |
-| -------------------------- | -------- | ----------------------------------------------------------------------------------- |
-| id                         | `String` | <p>Job Run ID</p>                                                                   |
-| data                       | `Object` |                                                                                     |
-| data.domainName            | `String` | <p>Name of validated domain.</p>                                                    |
-| data.domainOwner           | `String` | <p>Ethereum address of current domain owner.</p>                                    |
-| data.validationCode        | `String` | <p>Twitter unique hashtag used validation.</p>                                      |
-| data.twitterUsernameKey    | `String` | <p><code>.crypto Resolver</code> key where twitter username will be set.</p>        |
-| data.validatorSignatureKey | `String` | <p><code>.crypto Resolver</code> key where validation signature will be placed.</p> |
+| Name                | Type     | Description                                      |
+| ------------------- | -------- | ------------------------------------------------ |
+| id                  | `String` | <p>Job Run ID</p>                                |
+| data                | `Object` |                                                  |
+| data.domainName     | `String` | <p>Name of validated domain.</p>                 |
+| data.domainOwner    | `String` | <p>Ethereum address of current domain owner.</p> |
+| data.validationCode | `String` | <p>Twitter unique hashtag used validation.</p>   |

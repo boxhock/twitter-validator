@@ -27,13 +27,11 @@ POST /runs
 
 ### Parameters - `Parameter`
 
-| Name                  | Type     | Description                                                                         |
-| --------------------- | -------- | ----------------------------------------------------------------------------------- |
-| domainName            | `String` | <p>Name of validated domain.</p>                                                    |
-| domainOwner           | `String` | <p>Ethereum address of current domain owner.</p>                                    |
-| validationCode        | `String` | <p>Twitter unique hashtag used validation.</p>                                      |
-| twitterUsernameKey    | `String` | <p><code>.crypto Resolver</code> key where twitter username will be set.</p>        |
-| validatorSignatureKey | `String` | <p><code>.crypto Resolver</code> key where validation signature will be placed.</p> |
+| Name           | Type     | Description                                      |
+| -------------- | -------- | ------------------------------------------------ |
+| domainName     | `String` | <p>Name of validated domain.</p>                 |
+| domainOwner    | `String` | <p>Ethereum address of current domain owner.</p> |
+| validationCode | `String` | <p>Twitter unique hashtag used validation.</p>   |
 
 ### Success response
 

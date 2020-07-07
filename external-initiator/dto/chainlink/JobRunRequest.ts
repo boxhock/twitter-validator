@@ -16,12 +16,4 @@ export default class JobRunRequest {
   @IsString()
   @IsNotEmpty()
   validationCode: string;
-
-  @IsString()
-  @IsNotEmpty()
-  twitterUsernameKey: string;
-
-  @IsString()
-  @IsNotEmpty()
-  validatorSignatureKey: string;
 }

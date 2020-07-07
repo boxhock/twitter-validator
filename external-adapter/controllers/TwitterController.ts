@@ -5,6 +5,7 @@ import TwitterDetectorService from '../services/TwitterDetectorService';
 import ValidatorSignatureService from '../services/ValidatorSignatureService';
 import TwitterValidationResponse from '../dto/twitter/TwitterValidationResponse';
 import TransactionDataEncodeService from '../services/TransactionDataEncodeService';
+import config from '../config';
 
 @JsonController()
 export default class TwitterController {
@@ -24,8 +25,6 @@ export default class TwitterController {
    @apiParam {String} data.domainName Name of validated domain.
    @apiParam {String} data.domainOwner Ethereum address of current domain owner.
    @apiParam {String} data.validationCode Twitter unique hashtag used validation.
-   @apiParam {String} data.twitterUsernameKey `.crypto Resolver` key where twitter username will be set.
-   @apiParam {String} data.validatorSignatureKey `.crypto Resolver` key where validation signature will be placed.
    */
   @Post('/twitter/validate')
   async validateTwitter(
@@ -41,16 +40,14 @@ export default class TwitterController {
     const signResult = this.validatorSignatureService.sign({
       domainName: data.domainName,
       domainOwner: data.domainOwner,
-      domainRecordKey: data.twitterUsernameKey,
+      domainRecordKey: config.TWITTER.DOMAIN_RECORD_KEY,
       domainRecordValue: twitterUsername,
     });
     const transactionData = this.transactionDataEncodeService.encodeDomainValidationData(
       {
         domainName: data.domainName,
-        records: {
-          [data.twitterUsernameKey]: twitterUsername,
-          [data.validatorSignatureKey]: signResult.signature,
-        },
+        domainRecordValue: twitterUsername,
+        domainRecordSignature: signResult.signature,
       },
     );
 
