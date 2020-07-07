@@ -26,8 +26,6 @@ export default class JobController {
    @apiParam {String} domainName Name of validated domain.
    @apiParam {String} domainOwner Ethereum address of current domain owner.
    @apiParam {String} validationCode Twitter unique hashtag used validation.
-   @apiParam {String} twitterUsernameKey `.crypto Resolver` key where twitter username will be set.
-   @apiParam {String} validatorSignatureKey `.crypto Resolver` key where validation signature will be placed.
 
    @apiSuccess {Object} data
    @apiSuccess {String} data.id Job Run ID. Validation progress can be tracked via this id and Chainlink Explorer.

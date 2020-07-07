@@ -12,6 +12,7 @@ const config = {
     API_VERSION: '1.1',
     API_KEY: process.env.TWITTER_API_KEY as string,
     API_SECRET: process.env.TWITTER_API_SECRET as string,
+    DOMAIN_RECORD_KEY: 'social.twitter.username',
   },
   VALIDATOR_PRIVATE_KEY: process.env.VALIDATOR_PRIVATE_KEY as string,
   VALIDATOR_PUBLIC_KEY: '',

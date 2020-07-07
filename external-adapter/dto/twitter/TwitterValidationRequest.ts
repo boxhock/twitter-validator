@@ -18,14 +18,6 @@ class ValidationData {
   @IsString()
   @IsNotEmpty()
   validationCode: string;
-
-  @IsString()
-  @IsNotEmpty()
-  twitterUsernameKey: string;
-
-  @IsString()
-  @IsNotEmpty()
-  validatorSignatureKey: string;
 }
 
 export default class TwitterValidationRequest {
