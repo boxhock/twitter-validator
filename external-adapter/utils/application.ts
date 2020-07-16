@@ -5,6 +5,7 @@ import ChainlinkAdapterErrorHandler from '../middlewares/ChainlinkAdapterErrorHa
 
 const application = createExpressServer({
   defaultErrorHandler: false,
+  classTransformer: true,
   controllers: [TwitterController],
   middlewares: [ChainlinkAdapterErrorHandler],
 });

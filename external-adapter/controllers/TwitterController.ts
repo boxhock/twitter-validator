@@ -33,19 +33,19 @@ export default class TwitterController {
     const data = dto.data;
     const twitterUsername = await this.twitterDetectorService.detectUsernameByTweet(
       {
-        userUniqueHashtag: data.validationCode,
-        tweetText: data.domainName,
+        userUniqueHashtag: data.getValidationCode(),
+        tweetText: data.getDomainName(),
       },
     );
     const signResult = this.validatorSignatureService.sign({
-      domainName: data.domainName,
-      domainOwner: data.domainOwner,
+      domainName: data.getDomainName(),
+      domainOwner: data.getDomainOwner(),
       domainRecordKey: config.TWITTER.DOMAIN_RECORD_KEY,
       domainRecordValue: twitterUsername,
     });
     const transactionData = this.transactionDataEncodeService.encodeDomainValidationData(
       {
-        domainName: data.domainName,
+        domainName: data.getDomainName(),
         domainRecordValue: twitterUsername,
         domainRecordSignature: signResult.signature,
       },

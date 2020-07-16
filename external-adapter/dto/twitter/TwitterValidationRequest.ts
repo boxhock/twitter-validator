@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {
   IsDefined,
   IsEthereumAddress,
@@ -6,6 +7,10 @@ import {
   Matches,
   ValidateNested,
 } from 'class-validator';
+import Web3 from 'web3';
+import { Type } from 'class-transformer';
+
+const web3 = new Web3();
 
 class ValidationData {
   @IsString()
@@ -18,6 +23,18 @@ class ValidationData {
   @IsString()
   @IsNotEmpty()
   validationCode: string;
+
+  getDomainName(): string {
+    return this.domainName.toLowerCase();
+  }
+
+  getDomainOwner(): string {
+    return web3.utils.toChecksumAddress(this.domainOwner);
+  }
+
+  getValidationCode(): string {
+    return this.validationCode;
+  }
 }
 
 export default class TwitterValidationRequest {
@@ -27,5 +44,6 @@ export default class TwitterValidationRequest {
 
   @IsDefined()
   @ValidateNested()
+  @Type(() => ValidationData)
   data: ValidationData;
 }

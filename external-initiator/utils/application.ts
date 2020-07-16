@@ -6,6 +6,7 @@ import JobController from '../controllers/JobController';
 
 const application = createExpressServer({
   authorizationChecker,
+  classTransformer: true,
   controllers: [RunController, JobController],
 });
 
